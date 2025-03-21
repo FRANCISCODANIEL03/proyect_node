@@ -13,3 +13,15 @@ app.use(cors());
 //Rutas
 app.use("/api/v1/prod", productRoutes);
 
+AppDataSource.initialize().then(
+    ()=>{
+        console.log("Conectado a la base de datos");
+        app.listen(PORT, () => console.log(`server running in http://localhost:${PORT}`));
+    }
+).catch(
+    (err)=>{
+        console.log("Error al conectar a la base de datos");
+        console.error(err);
+    }
+);
+
