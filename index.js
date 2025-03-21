@@ -10,3 +10,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+//Rutas
+app.use("/api/v1/prod", productRoutes);
+
