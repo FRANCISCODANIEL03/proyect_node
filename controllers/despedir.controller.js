@@ -4,3 +4,5 @@ const despedirController = (req, res)=>{
     const mensajeDespido = despedir();
     res.json(mensajeDespido);
 }
+
+module.exports = {despedirController};
