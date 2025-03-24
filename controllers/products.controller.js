@@ -25,7 +25,28 @@ class ProductController {
             return res.status(500).json({ message: error.message || "Error interno al leer los datos" });
         }
     }
+    static async create(req, res) {
+        try {
+            const { nombre, precio, stock } = req.body;
+            const data = { nombre, precio, stock };
+            // Lista de campos permitidos
+            const allowedFields = ["nombre", "precio", "stock"];
+            const receivedFields = Object.keys(req.body);
 
+            // Verificar si hay campos no permitidos
+            const invalidFields = receivedFields.filter(field => !allowedFields.includes(field));
+            if (invalidFields.length > 0) {
+                return res.status(400).json({ message: `Campos no permitidos: ${invalidFields.join(", ")}` });
+            }
+            if (!createProduct(data)) {
+                return res.status(400).json({ message: "Datos incorrectos o vacios" });
+            }
+            const product = await ProductService.create(data);
+            return res.status(201).json({ message: "Producto creado exitosamente"});
+        } catch (error) {
+            return res.status(500).json({ message: error.message || "Error interno al crear el producto" });
+        }
+    }
 }
 
 
