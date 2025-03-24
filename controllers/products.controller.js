@@ -88,6 +88,26 @@ class ProductController {
             return res.status(500).json({ message: error.message || "Error interno al actualizar el producto" });
         }
     }
+    static async delete(req, res) {
+        try {
+            const { id } = req.params;
+            if (!id || isNaN(id)) {
+                return res.status(400).json({ message: "Ingresa un id valido" });
+            }
+            const existingProduct = await ProductService.getOneBy(id);
+            if (!existingProduct) {
+                return res.status(404).json({ message: "Producto no existente" });
+            }
+            const product = await ProductService.delete(id);
+            if (!product) {
+                return res.status(404).json({ message: "Producto no existente" });
+            }
+            return res.status(204).json({ message: "Producto eliminado exitosamente" });
+        } catch (error) {
+            return res.status(500).json({ message: error.message || "Error interno al eliminar el producto" });
+        }
+    }
+
 }
 
 
