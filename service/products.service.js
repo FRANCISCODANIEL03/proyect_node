@@ -9,6 +9,11 @@ class ProductService{
         return await ProductRepository.findOneBy({id});
     }
 
+    async create(product){
+        const newProduct = ProductRepository.create(product);
+        return await ProductRepository.save(newProduct);
+    }
+
    
 }
 
