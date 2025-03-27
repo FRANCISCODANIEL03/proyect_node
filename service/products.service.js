@@ -24,3 +24,4 @@ class ProductService{
     }
 }
 
+module.exports = {ProductService: new ProductService()}
