@@ -19,5 +19,8 @@ class ProductService{
         return await ProductRepository.findOneBy({id});
     }
 
+    async delete(id){
+        return await ProductRepository.delete({id});
+    }
 }
 
