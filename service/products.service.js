@@ -5,6 +5,10 @@ class ProductService{
         return await ProductRepository.find();
     }
 
-    
+    async getOneBy(id){
+        return await ProductRepository.findOneBy({id});
+    }
+
+   
 }
 
