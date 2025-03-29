@@ -45,3 +45,12 @@ const editar = (id, nombre, precio, stock) => {
     btnReset.classList.remove('bg-sky-300', 'hover:bg-sky-500')
     btnReset.classList.add('bg-red-400', 'hover:red-500')
 };
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    const contenedor = document.getElementById('contenedor-cards');
+    const form = document.getElementById('form');
+    const btnSubmit = form.querySelector('button[type="submit"]'); 
+    const btnReset = form.querySelector('button[type="button"]'); 
+
+})
+    
