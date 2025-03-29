@@ -58,6 +58,28 @@ document.addEventListener('DOMContentLoaded', ()=>{
         const price = parseFloat(document.getElementById('price').value)
         const stock = parseInt(document.getElementById('stock').value)
 
+        data = {
+            "nombre": name,
+            "precio": price,
+            "stock": stock 
+        }
+
+        if (editando) {
+            const response = await fetch('http://localhost:3000/api/v1/prod/'+productoId, {
+                method: "PATCH",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert("Producto actualizado correctamente");
+                resetFormulario();
+                obtenerProductosAPI();
+            } else {
+                const respuesta = await response.json();
+                alert(respuesta.message || "Error al actualizar producto");
+            }
+        }
     })
 
 })
