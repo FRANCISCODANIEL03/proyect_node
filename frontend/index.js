@@ -27,3 +27,21 @@ const eliminar = async(id)=>{
         }
     }
 }
+
+// Función para editar un producto
+const editar = (id, nombre, precio, stock) => {
+    document.getElementById('name').value = nombre;
+    document.getElementById('price').value = precio;
+    document.getElementById('stock').value = stock;
+    const btnSubmit = form.querySelector('button[type="submit"]'); 
+    const btnReset = form.querySelector('button[type="button"]'); 
+
+    productoId = id;
+    editando = true;
+
+    // Cambiar los textos de los botones
+    btnSubmit.textContent = "Guardar";
+    btnReset.textContent = "Cancelar";
+    btnReset.classList.remove('bg-sky-300', 'hover:bg-sky-500')
+    btnReset.classList.add('bg-red-400', 'hover:red-500')
+};
