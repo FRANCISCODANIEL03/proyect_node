@@ -52,5 +52,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const btnSubmit = form.querySelector('button[type="submit"]'); 
     const btnReset = form.querySelector('button[type="button"]'); 
 
+    form.addEventListener('submit', async(e)=>{
+        e.preventDefault()
+        const name = document.getElementById('name').value
+        const price = parseFloat(document.getElementById('price').value)
+        const stock = parseInt(document.getElementById('stock').value)
+
+    })
+
 })
     
