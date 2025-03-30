@@ -104,5 +104,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
     })
 
+    // Función para restablecer el formulario
+    const resetFormulario = () => {
+        form.reset();
+        editando = false;
+        productoId = null;
+        btnSubmit.textContent = "Agregar";
+        btnReset.textContent = "Limpiar";
+        btnReset.classList.remove('bg-red-400', 'hover:red-500')
+        btnReset.classList.add('bg-sky-300', 'hover:sky-500')
+    };
+
 })
     
