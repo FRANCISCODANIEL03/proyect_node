@@ -118,5 +118,40 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // Asignar función de cancelar al botón reset
     btnReset.addEventListener('click', resetFormulario);
     
+    const obtenerProductosAPI = async()=>{
+        const response = await fetch('http://localhost:3000/api/v1/prod');
+
+        if (response.ok){
+            const productos = await response.json();
+            contenedor.innerHTML = "";
+            productos.map(producto=>{
+                contenedor.innerHTML += `
+                <li id="${producto.id}" class="w-10/12 max-md:w-auto flex max-lg:flex-col bg-sky-200 
+                transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 
+                hover:bg-sky-400 rounded-xl justify-between p-3">
+                <div>
+                <h3 class="ml-5 py-1 font-bold">${producto.nombre}</h3>
+                <div class="ml-4 py-2 flex flex-col">
+                <span class="ml-2 text-green-600 font-semibold">$${producto.precio}</span>
+                <span class="ml-2 mt-2 font-semibold">Stock: ${producto.stock}</span>
+                </div>
+                </div>
+                <div class="flex flex-col my-2 mr-6">
+                <button
+                onclick="editar(${producto.id}, '${producto.nombre}', ${producto.precio}, ${producto.stock})"
+                class="bg-sky-300 px-8 py-1 mb-2 font-bold border-2 border-sky-300 hover:border-sky-50 rounded-xl">
+                <i class="bi bi-pencil"></i> Editar</button>
+                <button 
+                onclick="eliminar(${producto.id})" 
+                class="bg-red-400 px-8 py-1 font-bold border-2 border-red-400 hover:border-red-50 rounded-xl">
+                <i class="bi bi-trash3"></i>
+                Eliminar</button>
+                </div>
+                </li>
+                `
+            });
+        }
+    }
+    obtenerProductosAPI();
 })
     
