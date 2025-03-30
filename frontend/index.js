@@ -115,5 +115,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
         btnReset.classList.add('bg-sky-300', 'hover:sky-500')
     };
 
+    // Asignar función de cancelar al botón reset
+    btnReset.addEventListener('click', resetFormulario);
+    
 })
     
