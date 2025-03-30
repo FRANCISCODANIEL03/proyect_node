@@ -79,7 +79,29 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 const respuesta = await response.json();
                 alert(respuesta.message || "Error al actualizar producto");
             }
+        } else {
+        const response = await fetch('http://localhost:3000/api/v1/prod',{
+                method:"POST",
+                headers:{
+                    "Content-type": "application/json"
+                },
+                body:JSON.stringify(data)
+                }   
+        );
+
+        if(response.status == 201){
+            alert("producto agregado correctamente")
+            obtenerProductosAPI()
+            return
+        }else{
+            const respuesta = await response.json()
+            if(response.ok){
+                alert(respuesta.message || "Error al agregar producto")
+            }else{
+                alert(respuesta.message)
+            }
         }
+    }
     })
 
 })
