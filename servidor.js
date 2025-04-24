@@ -1,19 +1,61 @@
-// Servidor Express para obtener el contenido de una URL
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const cheerio = require('cheerio');
 
 const app = express();
 app.use(cors());
 
+const getTitleFromHTML = (html) => {
+  const $ = cheerio.load(html);
+  return $('title').text().trim();
+};
+
+// General
 app.get('/fetch-title', async (req, res) => {
   const { url } = req.query;
+  if (!url) return res.status(400).json({ error: 'URL no proporcionada' });
+
   try {
-    const { data } = await axios.get(url);
-    res.send(data);
+    const response = await axios.get(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    const title = getTitleFromHTML(response.data);
+    if (!title) throw new Error('No title found');
+    res.json({ title });
   } catch (err) {
-    res.status(500).send('Error al obtener el contenido');
+    console.error('Error en /fetch-title:', err.message);
+    res.status(500).json({ error: 'Error al obtener el título' });
   }
 });
 
-app.listen(4000, () => console.log('Proxy en http://localhost:4000'));
+// YouTube específico
+app.get('/youtube-title', async (req, res) => {
+  const { url } = req.query;
+  try {
+    const { data } = await axios.get(`https://noembed.com/embed?url=${url}`);
+    res.json({ title: data.title });
+  } catch (err) {
+    console.error('Error en /youtube-title:', err.message);
+    res.status(500).json({ error: 'Error al obtener título de YouTube' });
+  }
+});
+
+// TikTok (solo si el título se puede obtener desde metadata)
+app.get('/tiktok-title', async (req, res) => {
+  const { url } = req.query;
+  try {
+    const response = await axios.get(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    const $ = cheerio.load(response.data);
+    const title = $('meta[property="og:title"]').attr('content') || $('title').text();
+    res.json({ title: title.trim() });
+  } catch (err) {
+    console.error('Error en /tiktok-title:', err.message);
+    res.status(500).json({ error: 'Error al obtener título de TikTok' });
+  }
+});
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
