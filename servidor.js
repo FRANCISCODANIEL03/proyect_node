@@ -12,7 +12,7 @@ const getTitleFromHTML = (html) => {
   let title = $('title').text().trim();
 
   // Si no hay título o es genérico, intenta obtener og:title
-  if (!title || title.toLowerCase() === 'video') {
+  if (!title || title.toLowerCase() === 'video' || title.toLowerCase() === 'facebook') {
     const ogTitle = $('meta[property="og:title"]').attr('content');
     if (ogTitle) title = ogTitle.trim();
   }
