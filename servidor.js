@@ -6,9 +6,18 @@ const cheerio = require('cheerio');
 const app = express();
 app.use(cors());
 
+// Función mejorada para obtener el título
 const getTitleFromHTML = (html) => {
   const $ = cheerio.load(html);
-  return $('title').text().trim();
+  let title = $('title').text().trim();
+
+  // Si no hay título o es genérico, intenta obtener og:title
+  if (!title || title.toLowerCase() === 'video') {
+    const ogTitle = $('meta[property="og:title"]').attr('content');
+    if (ogTitle) title = ogTitle.trim();
+  }
+
+  return title || 'Sin título';
 };
 
 // General
@@ -41,7 +50,7 @@ app.get('/youtube-title', async (req, res) => {
   }
 });
 
-// TikTok (solo si el título se puede obtener desde metadata)
+// TikTok
 app.get('/tiktok-title', async (req, res) => {
   const { url } = req.query;
   try {
